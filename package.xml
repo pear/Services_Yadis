@@ -1,49 +1,59 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<package packagerversion="1.4.5" version="2.0" xmlns="http://pear.php.net/dtd/package-2.0" xmlns:tasks="http://pear.php.net/dtd/tasks-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0
+<package packagerversion="1.6.2" version="2.0" xmlns="http://pear.php.net/dtd/package-2.0" xmlns:tasks="http://pear.php.net/dtd/tasks-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0
     http://pear.php.net/dtd/tasks-1.0.xsd
     http://pear.php.net/dtd/package-2.0
     http://pear.php.net/dtd/package-2.0.xsd">
- <name>Services_Yadis</name>
+ <name>Crypt_HMAC2</name>
  <channel>pear.php.net</channel>
- <summary>Implementation of Yadis Specification 1.0 protocol for PHP5</summary>
+ <summary>Implementation of the Yadis Specification 1.0 protocol for PHP5.</summary>
  <description>Implementation of the Yadis Specification 1.0 protocol allowing a client to discover a list of Services a Yadis Identity Provider offers.</description>
  <lead>
   <name>Pádraic Brady</name>
   <user>padraic</user>
-  <email>padraic.brady@yahoo.com</email>
+  <email>padraic@php.net</email>
   <active>yes</active>
  </lead>
- <date>2007-07-20</date>
- <time>13:36:39</time>
+ <date>2007-09-29</date>
+ <time>18:42:11</time>
  <version>
-  <release>0.1.0a3</release>
-  <api>0.1.0</api>
+  <release>0.2.0</release>
+  <api>0.2.0</api>
  </version>
  <stability>
-  <release>alpha</release>
-  <api>alpha</api>
+  <release>beta</release>
+  <api>beta</api>
  </stability>
  <license uri="http://opensource.org/licenses/bsd-license.php">New BSD License</license>
- <notes>* Added package dependencies for HTTP_Request and Validate</notes>
+ <notes>* Initial release!</notes>
  <contents>
-  <dir baseinstalldir="Services" name="/">
-   <file baseinstalldir="Services" md5sum="b29c85371999eb6b5fcad5ebfc47fe09" name="Yadis/Exception.php" role="php" />
-   <file baseinstalldir="Services" md5sum="75d58d429c1e0b35d8cff9e972ef22fc" name="Yadis/Service.php" role="php" />
-   <file baseinstalldir="Services" md5sum="a3bcd90b8670f35ecaa78bce0493c073" name="Yadis/Xrds.php" role="php" />
-   <file baseinstalldir="Services" md5sum="8e988048ec99e5b32053fe5cd0f5038e" name="Yadis/Xri.php" role="php" />
-   <file baseinstalldir="Services" md5sum="96a324e6951bfb5846c44980167a4142" name="Yadis/Xrds/Namespace.php" role="php" />
-   <file baseinstalldir="Services" md5sum="b148ae3e5b1a1ed5a30e87debfd34caa" name="Yadis/Xrds/Service.php" role="php" />
-   <file baseinstalldir="Services" md5sum="5da1b3a0748ab873f78408da96256702" name="Yadis.php" role="php" />
-  </dir>
+  <dir baseinstalldir="/" name="/">
+   <dir name="Yadis">
+    <dir name="Xrds">
+     <file name="Namespace.php" role="php" />
+     <file name="Service.php" role="php" />
+    </dir> <!-- //Yadis/Xrds -->
+    <file name="Exception.php" role="php" />
+    <file name="Service.php" role="php" />
+    <file name="Xrds.php" role="php" />
+    <file name="Xri.php" role="php" />
+   </dir> <!-- //Yadis -->
+   <file name="test.php" role="php" />
+   <file name="Yadis.php" role="php" />
+  </dir> <!-- / -->
  </contents>
  <dependencies>
   <required>
    <php>
-    <min>5.1.4</min>
+    <min>5.0.0</min>
    </php>
    <pearinstaller>
-    <min>1.4.0</min>
+    <min>1.4.0b1</min>
    </pearinstaller>
+   <package>
+    <name>PEAR</name>
+    <channel>pear.php.net</channel>
+    <min>1.3.6</min>
+   </package>
    <package>
     <name>HTTP_Request</name>
     <channel>pear.php.net</channel>
@@ -58,43 +68,16 @@
  <changelog>
   <release>
    <version>
-    <release>0.1.0a1</release>
-    <api>0.1.0</api>
+    <release>0.2.0</release>
+    <api>0.2.0</api>
    </version>
    <stability>
-    <release>alpha</release>
-    <api>alpha</api>
+    <release>beta</release>
+    <api>beta</api>
    </stability>
-   <date>2007-07-12</date>
-   <license>New BSD License</license>
-   <notes>* Initial build for PEAR</notes>
-  </release>
-  <release>
-   <version>
-    <release>0.1.0a2</release>
-    <api>0.1.0</api>
-   </version>
-   <stability>
-    <release>alpha</release>
-    <api>alpha</api>
-   </stability>
-   <date>2007-07-13</date>
-   <license>New BSD License</license>
-   <notes>* Updated source code for Proposal comments.
-* Patched several operation breaking bugs and typos</notes>
-  </release>
-  <release>
-   <version>
-    <release>0.1.0a3</release>
-    <api>0.1.0</api>
-   </version>
-   <stability>
-    <release>alpha</release>
-    <api>alpha</api>
-   </stability>
-   <date>2007-07-20</date>
-   <license>New BSD License</license>
-   <notes>* Added package dependencies for HTTP_Request and Validate</notes>
+   <date>2007-09-29</date>
+   <license uri="http://opensource.org/licenses/bsd-license.php">New BSD License</license>
+   <notes>* Initial release!</notes>
   </release>
  </changelog>
 </package>

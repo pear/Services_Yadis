@@ -1,38 +1,58 @@
 <?php
 require_once('PEAR/PackageFileManager2.php');
 PEAR::setErrorHandling(PEAR_ERROR_DIE);
-$packagexml = new PEAR_PackageFileManager2;
 
-$e = $packagexml->setOptions(
-    array('baseinstalldir' => 'Services',
-     'packagedirectory' => 'D:/xampp/htdocs/projects/pear/trunk/Services_Yadis',
-     'filelistgenerator' => 'file',
-     'dir_roles' => array('docs' => 'doc', 'tests' => 'test'),
-     'ignore' => array('generate_package_xml.php', '.svn')
-    )
+$packagefile = './package.xml';
+
+$options = array(
+    'filelistgenerator' => 'cvs',
+    'changelogoldtonew' => false,
+    'simpleoutput'      => true,
+    'baseinstalldir'    => '/',
+    'packagedirectory'  => './',
+    'packagefile'       => $packagefile,
+    'clearcontents'     => true,
+    'ignore'            => array('generate_package_xml.php', '.svn', '.cvs*'),
+    'dir_roles'         => array(
+        'docs'     => 'doc',
+        'examples' => 'doc',
+        'tests'    => 'test',
+    ),
 );
 
-$packagexml->setPackage('Services_Yadis');
-$packagexml->setSummary('Implementation of Yadis Specification 1.0 protocol for PHP5');
-$packagexml->setDescription("Implementation of the Yadis Specification 1.0 protocol allowing a client to discover a list of Services a Yadis Identity Provider offers.");
-$packagexml->setChannel('pear.php.net');
-$packagexml->setAPIVersion('0.1.0');
-$packagexml->setReleaseVersion('0.1.0a3');
-$packagexml->setReleaseStability('alpha');
-$packagexml->setAPIStability('alpha');
-$packagexml->setNotes("* Added package dependencies for HTTP_Request and Validate");
+$packagexml = &PEAR_PackageFileManager2::importOptions($packagefile, $options);
 $packagexml->setPackageType('php');
-$packagexml->setPhpDep('5.1.4');
-$packagexml->setPearinstallerDep('1.4.0');
+
+$packagexml->setPackage('Crypt_HMAC2');
+$packagexml->setSummary('Implementation of the Yadis Specification 1.0 protocol for PHP5.');
+$packagexml->setDescription("Implementation of the Yadis Specification 1.0 protocol allowing a client to discover a list of Services a Yadis Identity Provider offers.");
+
+$packagexml->setChannel('pear.php.net');
+
+$notes = <<<EOT
+* Initial release!
+EOT;
+$packagexml->setNotes($notes);
+
+$packagexml->setPhpDep('5.0.0');
+$packagexml->setPearinstallerDep('1.4.0b1');
+$packagexml->addPackageDepWithChannel('required', 'PEAR', 'pear.php.net', '1.3.6');
 $packagexml->addPackageDepWithChannel('required', 'HTTP_Request', 'pear.php.net');
 $packagexml->addPackageDepWithChannel('required', 'Validate', 'pear.php.net');
-$packagexml->addMaintainer('lead', 'padraic', 'Pádraic Brady', 'padraic.brady@yahoo.com');
+
+$packagexml->addMaintainer('lead', 'padraic', 'Pádraic Brady', 'padraic@php.net');
 $packagexml->setLicense('New BSD License', 'http://opensource.org/licenses/bsd-license.php');
+
+$packagexml->addRelease();
 $packagexml->generateContents();
+
+$packagexml->setAPIVersion('0.2.0');
+$packagexml->setReleaseVersion('0.2.0');
+$packagexml->setReleaseStability('beta');
+$packagexml->setAPIStability('beta');
 
 if (isset($_GET['make']) || (isset($_SERVER['argv']) && @$_SERVER['argv'][1] == 'make')) {
     $packagexml->writePackageFile();
 } else {
     $packagexml->debugPackageFile();
 }
-?>
