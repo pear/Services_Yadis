@@ -23,7 +23,7 @@ $options = array(
 $packagexml = &PEAR_PackageFileManager2::importOptions($packagefile, $options);
 $packagexml->setPackageType('php');
 
-$packagexml->setPackage('Crypt_HMAC2');
+$packagexml->setPackage('Services_Yadis');
 $packagexml->setSummary('Implementation of the Yadis Specification 1.0 protocol for PHP5.');
 $packagexml->setDescription("Implementation of the Yadis Specification 1.0 protocol allowing a client to discover a list of Services a Yadis Identity Provider offers.");
 
