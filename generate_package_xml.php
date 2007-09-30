@@ -2,16 +2,16 @@
 require_once('PEAR/PackageFileManager2.php');
 PEAR::setErrorHandling(PEAR_ERROR_DIE);
 
-$packagefile = './package.xml';
+$packagefile = dirname(__FILE__) . '/package.xml';
 
 $options = array(
     'filelistgenerator' => 'cvs',
     'changelogoldtonew' => false,
     'simpleoutput'      => true,
     'baseinstalldir'    => 'Services',
-    'packagedirectory'  => './',
-    'packagefile'       => $packagefile,
-    'clearcontents'     => false,
+    'packagedirectory'  => dirname(__FILE__),
+    //'packagefile'       => $packagefile,
+    'clearcontents'     => true,
     'ignore'            => array('generate_package_xml.php', '.svn', '.cvs*'),
     'dir_roles'         => array(
         'docs'     => 'doc',
@@ -39,6 +39,7 @@ $packagexml->setPearinstallerDep('1.4.0b1');
 $packagexml->addPackageDepWithChannel('required', 'PEAR', 'pear.php.net', '1.3.6');
 $packagexml->addPackageDepWithChannel('required', 'HTTP_Request', 'pear.php.net');
 $packagexml->addPackageDepWithChannel('required', 'Validate', 'pear.php.net');
+$packagexml->addExtensionDep('required', 'simplexml');
 
 $packagexml->addMaintainer('lead', 'padraic', 'Pádraic Brady', 'padraic@php.net');
 $packagexml->setLicense('New BSD License', 'http://opensource.org/licenses/bsd-license.php');
