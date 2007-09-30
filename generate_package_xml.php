@@ -8,10 +8,10 @@ $options = array(
     'filelistgenerator' => 'cvs',
     'changelogoldtonew' => false,
     'simpleoutput'      => true,
-    'baseinstalldir'    => '/',
+    'baseinstalldir'    => 'Services',
     'packagedirectory'  => './',
     'packagefile'       => $packagefile,
-    'clearcontents'     => true,
+    'clearcontents'     => false,
     'ignore'            => array('generate_package_xml.php', '.svn', '.cvs*'),
     'dir_roles'         => array(
         'docs'     => 'doc',
@@ -30,7 +30,7 @@ $packagexml->setDescription("Implementation of the Yadis Specification 1.0 proto
 $packagexml->setChannel('pear.php.net');
 
 $notes = <<<EOT
-* Initial release!
+* Fixed base directory install issue
 EOT;
 $packagexml->setNotes($notes);
 
@@ -46,8 +46,8 @@ $packagexml->setLicense('New BSD License', 'http://opensource.org/licenses/bsd-l
 $packagexml->addRelease();
 $packagexml->generateContents();
 
-$packagexml->setAPIVersion('0.2.0');
-$packagexml->setReleaseVersion('0.2.0');
+$packagexml->setAPIVersion('0.2.1');
+$packagexml->setReleaseVersion('0.2.1');
 $packagexml->setReleaseStability('beta');
 $packagexml->setAPIStability('beta');
 
