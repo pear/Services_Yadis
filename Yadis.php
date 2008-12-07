@@ -301,7 +301,8 @@ class Services_Yadis
         if (stripos($yadisId, 'xri://') == 0 || in_array($yadisId[0], $this->_xriIdentifiers))
         {
             require_once 'Services/Yadis/Xri.php';
-            $xri = Services_Yadis_Xri::getInstance()
+            $xri = Services_Yadis_Xri::getInstance();
+
             $this->_yadisUrl = $xri->setHttpRequestOptions($this->getHttpRequestOptions())
                     ->setNamespace($this->_namespace)
                     ->toUri($yadisId);
