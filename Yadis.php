@@ -520,10 +520,10 @@ class Services_Yadis
      */
     protected function _get($url)
     {
-        if ($this->_getHttpRequest() === null) {
+        if ($this->getHttpRequest() === null) {
             $request = new HTTP_Request($url, $this->getHttpRequestOptions());
         } else {
-            $request = $this->_getHttpRequest();
+            $request = $this->getHttpRequest();
         }
         $request->setMethod(HTTP_REQUEST_METHOD_GET);
         $request->addHeader('Accept', 'application/xrds+xml');
