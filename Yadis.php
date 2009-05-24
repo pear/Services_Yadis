@@ -188,7 +188,7 @@ class Services_Yadis
         '=', '$', '!', '@', '+'
     );
 
-    protected $_httpRequestOptions = null;
+    protected $_httpRequestOptions = array();
 
     /**
      * HTTP_Request object utilised by this class if externally set
