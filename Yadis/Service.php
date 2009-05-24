@@ -108,6 +108,16 @@ class Services_Yadis_Service
        return $this->getElements('xrd:URI');
     }
 
+     /**
+     * Return an array of Service Type LocalID strings.
+     * 
+     * @return array|boolean
+     */
+    public function getLocalIDs()
+    {
+       return $this->getElements('xrd:LocalID');
+    }
+
     /**
      * Returns the Priority integer of this Service node.
      *
