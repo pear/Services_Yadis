@@ -132,7 +132,7 @@ class Services_Yadis
      * For example, OpenID allows a Yadis fallback which relies on seeking a
      * set of appropriate <link> elements.
      *
-     * @var string
+     * @var HTTP_Request
      */
     protected $_metaHttpEquivResponse = null;
 
@@ -403,7 +403,7 @@ class Services_Yadis
         while($xrdsDocument === null) {
             $request = $this->_get($currentUri);
             if (!$this->_metaHttpEquivResponse) {
-                $this->_metaHttpEquivResponse = $request->getResponseBody();
+                $this->_metaHttpEquivResponse = $request;
             }
             $responseType = $this->_getResponseType($request);
 
