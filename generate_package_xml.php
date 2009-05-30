@@ -30,25 +30,26 @@ $packagexml->setDescription("Implementation of the Yadis Specification 1.0 proto
 $packagexml->setChannel('pear.php.net');
 
 $notes = <<<EOT
-* Fixed base directory install issue
+* Fixed Bug #15683
+* Fixed Bug #15804
 EOT;
 $packagexml->setNotes($notes);
 
-$packagexml->setPhpDep('5.0.0');
+$packagexml->setPhpDep('5.2.0');
 $packagexml->setPearinstallerDep('1.4.0b1');
 $packagexml->addPackageDepWithChannel('required', 'PEAR', 'pear.php.net', '1.3.6');
 $packagexml->addPackageDepWithChannel('required', 'HTTP_Request', 'pear.php.net');
 $packagexml->addPackageDepWithChannel('required', 'Validate', 'pear.php.net');
 $packagexml->addExtensionDep('required', 'simplexml');
 
-$packagexml->addMaintainer('lead', 'padraic', 'Pádraic Brady', 'padraic@php.net');
+$packagexml->addMaintainer('lead', 'shupp', 'Bill Shupp', 'shupp@php.net');
 $packagexml->setLicense('New BSD License', 'http://opensource.org/licenses/bsd-license.php');
 
 $packagexml->addRelease();
 $packagexml->generateContents();
 
 $packagexml->setAPIVersion('0.2.1');
-$packagexml->setReleaseVersion('0.2.1');
+$packagexml->setReleaseVersion('0.2.3');
 $packagexml->setReleaseStability('beta');
 $packagexml->setAPIStability('beta');
 
