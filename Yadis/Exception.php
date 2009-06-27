@@ -33,12 +33,11 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * @category    Services
- * @package     Services_Yadis
- * @author      Pádraic Brady <padraic.brady@yahoo.com>
- * @license     http://opensource.org/licenses/bsd-license.php New BSD License
- * @version     $Id$
- * @link        http://
+ * @category Services
+ * @package  Services_Yadis
+ * @author   Pádraic Brady <padraic.brady@yahoo.com>
+ * @license  http://opensource.org/licenses/bsd-license.php New BSD License
+ * @link     http://pear.php.net/package/services_yadis
  */
 
 /**
@@ -49,13 +48,13 @@ require_once 'PEAR/Exception.php';
 /**
  * Services_Yadis_Exception
  *
- * @category   Services
- * @package    Services_Yadis
- * @author     Pádraic Brady <padraic.brady@yahoo.com>
- * @license    http://opensource.org/licenses/bsd-license.php New BSD License
- * @link       http://
- * @version    @package_version@
- * @access     public
+ * @category Services
+ * @package  Services_Yadis
+ * @author   Pádraic Brady <padraic.brady@yahoo.com>
+ * @license  http://opensource.org/licenses/bsd-license.php New BSD License
+ * @link     http://pear.php.net/package/services_yadis
  */
 class Services_Yadis_Exception extends PEAR_Exception
-{}
+{
+}
+?>
