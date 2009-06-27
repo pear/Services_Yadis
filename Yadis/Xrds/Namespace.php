@@ -34,25 +34,29 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * @category   Services
- * @package    Services_Yadis
- * @author     Pádraic Brady (http://blog.astrumfutura.com)
- * @license    http://opensource.org/licenses/bsd-license.php New BSD License
- * @version    $Id$
+ * @category Services
+ * @package  Services_Yadis
+ * @author   Pádraic Brady <padraic.brady@yahoo.com>
+ * @license  http://opensource.org/licenses/bsd-license.php New BSD License
+ * @link     http://pear.php.net/package/services_yadis
  */
 
 /** Validate */
 require_once 'Validate.php';
+
+/** Services_Yadis_Exception */
+require_once 'Services/Yadis/Exception.php';
 
 /**
  * The Services_Yadis_Xrds_Namespace class is a container for namespaces
  * which need to be registered to an XML parser in order to correctly consume
  * an XRDS document using the parser's XPath functionality.
  *
- * @category   Services
- * @package    Services_Yadis
- * @author     Pádraic Brady (http://blog.astrumfutura.com)
- * @license    http://opensource.org/licenses/bsd-license.php New BSD License
+ * @category Services
+ * @package  Services_Yadis
+ * @author   Pádraic Brady <padraic.brady@yahoo.com>
+ * @license  http://opensource.org/licenses/bsd-license.php New BSD License
+ * @link     http://pear.php.net/package/services_yadis
  */
 class Services_Yadis_Xrds_Namespace
 {
@@ -62,20 +66,22 @@ class Services_Yadis_Xrds_Namespace
      *
      * @var array
      */
-    protected $_namespaces = array(
+    protected $namespaces = array(
         'xrds' => 'xri://$xrds',
-        'xrd' => 'xri://$xrd*($v*2.0)'
+        'xrd'  => 'xri://$xrd*($v*2.0)'
     );
 
     /**
      * Add a list (array) of additional namespaces to be utilised by the XML
      * parser when it receives a valid XRD document.
      *
-     * @param array $namespaces
+     * @param array $namespaces Array of namespaces to add
+     *
+     * @return  void
      */
     public function addNamespaces(array $namespaces)
     {
-        foreach($namespaces as $namespaceKey=>$namespaceUrl) {
+        foreach ($namespaces as $namespaceKey=>$namespaceUrl) {
             $this->addNamespace($namespaceKey, $namespaceUrl);
         }
     }
@@ -84,35 +90,44 @@ class Services_Yadis_Xrds_Namespace
      * Add a single namespace to be utilised by the XML parser when it receives
      * a valid XRD document.
      *
-     * @param   string $namespaceKey
-     * @param   string $namespaceUrl
+     * @param string $namespaceKey Namespace key
+     * @param string $namespaceUrl Namepspace URL
+     *
      * @return  void
      */
     public function addNamespace($namespaceKey, $namespaceUrl)
     {
-        if (!isset($namespaceKey) || !isset($namespaceUrl) || empty($namespaceKey) || empty($namespaceUrl)) {
-            require_once 'Services/Yadis/Exception.php';
-            throw new Services_Yadis_Exception('Parameters must be non-empty strings');
+        if (!isset($namespaceKey) || !isset($namespaceUrl)
+                   || empty($namespaceKey) || empty($namespaceUrl)) {
+
+            throw new Services_Yadis_Exception(
+                'Parameters must be non-empty strings'
+            );
         } elseif (!Validate::uri($namespaceUrl)) {
-            require_once 'Services/Yadis/Exception.php';
-            throw new Services_Yadis_Exception('Invalid namespace URI: ' . htmlentities($namespaceUrl, ENT_QUOTES, 'utf-8'));
+            throw new Services_Yadis_Exception(
+                'Invalid namespace URI: '
+                . htmlentities($namespaceUrl, ENT_QUOTES, 'utf-8')
+            );
         } elseif (array_key_exists($namespaceKey, $this->getNamespaces())) {
-            require_once 'Services/Yadis/Exception.php';
-            throw new Services_Yadis_Exception('You may not redefine the "xrds" or "xrd" XML Namespaces'); 
+            throw new Services_Yadis_Exception(
+                'You may not redefine the "xrds" or "xrd" XML Namespaces'
+            ); 
         }
-        $this->_namespaces[$namespaceKey] = $namespaceUrl;
+
+        $this->namespaces[$namespaceKey] = $namespaceUrl;
     }
 
     /**
      * Return the value of a specific namespace, or FALSE if not found.
      *
-     * @param string $namespaceKey
+     * @param string $namespaceKey Namespace key
+     *
      * @return string|boolean
      */
     public function getNamespace($namespaceKey)
     {
-        if (array_key_exists($namespaceKey, $this->_namespaces)) {
-            return $this->_namespaces[$namespaceKey];
+        if (array_key_exists($namespaceKey, $this->namespaces)) {
+            return $this->namespaces[$namespaceKey];
         }
         return false;
     }
@@ -124,20 +139,21 @@ class Services_Yadis_Xrds_Namespace
      */
     public function getNamespaces()
     {
-        return $this->_namespaces;
+        return $this->namespaces;
     }
 
     /**
      * Register all stored namespaces to the parameter SimpleXMLElement object.
      *
-     * @param   SimpleXMLElement
-     * @return  void
+     * @param SimpleXMLElement $element Instance of SimpleXMLElement
+     *
+     * @return void
      */
     public function registerXpathNamespaces(SimpleXMLElement $element)
     {
-        foreach ($this->_namespaces as $namespaceKey=>$namespaceUrl) {
+        foreach ($this->namespaces as $namespaceKey => $namespaceUrl) {
             $element->registerXPathNamespace($namespaceKey, $namespaceUrl);
         }
     }
-
 }
+?>
