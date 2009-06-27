@@ -34,15 +34,18 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * @category   Services
- * @package    Services_Yadis
- * @author     Pádraic Brady (http://blog.astrumfutura.com)
- * @license    http://opensource.org/licenses/bsd-license.php New BSD License
- * @version    $Id$
+ * @category Services
+ * @package  Services_Yadis
+ * @author   Pádraic Brady <padraic.brady@yahoo.com>
+ * @license  http://opensource.org/licenses/bsd-license.php New BSD License
+ * @link     http://pear.php.net/package/services_yadis
  */
 
 /** HTTP_Request */
 require_once 'HTTP/Request.php';
+
+/** Services_Yadis_Exception */
+require_once 'Services/Yadis/Exception.php';
 
 /** Validate */
 require_once 'Validate.php';
@@ -50,10 +53,11 @@ require_once 'Validate.php';
 /**
  * Provides methods for translating an XRI into a URI.
  *
- * @category   Services
- * @package    Services_Yadis
- * @author     Pádraic Brady (http://blog.astrumfutura.com)
- * @license    http://opensource.org/licenses/bsd-license.php New BSD License
+ * @category Services
+ * @package  Services_Yadis
+ * @author   Pádraic Brady <padraic.brady@yahoo.com>
+ * @license  http://opensource.org/licenses/bsd-license.php New BSD License
+ * @link     http://pear.php.net/package/services_yadis
  */
 class Services_Yadis_Xri
 {
@@ -63,7 +67,7 @@ class Services_Yadis_Xri
      *
      * @var Services_Yadis_Xri
      */
-    protected static $_instance = null;
+    protected static $instance = null;
 
     /*
      * Array of characters which if found at the 0 index of a Yadis ID string
@@ -71,7 +75,7 @@ class Services_Yadis_Xri
      *
      * @var array
      */
-    protected $_xriIdentifiers = array(
+    protected $xriIdentifiers = array(
         '=', '$', '!', '@', '+'
     );
 
@@ -80,7 +84,7 @@ class Services_Yadis_Xri
      *
      * @var string
      */
-    protected $_proxy = 'http://xri.net/';
+    protected $proxy = 'http://xri.net/';
 
     /**
      * Instance of Services_Yadis_Xrds_Namespace for managing namespaces
@@ -88,21 +92,21 @@ class Services_Yadis_Xri
      *
      * @var Services_Yadis_Xrds_Namespace
      */
-    protected $_namespace = null;
+    protected $namespace = null;
 
     /**
      * The XRI string.
      *
      * @var string
      */
-    protected $_xri = null;
+    protected $xri = null;
 
     /**
      * The URI as translated from an XRI and appended to a Proxy.
      *
      * @var string
      */
-    protected $_uri = null;
+    protected $uri = null;
 
     /**
      * A Canonical ID if requested, and parsed from the XRDS document found
@@ -110,15 +114,25 @@ class Services_Yadis_Xri
      *
      * @var string
      */
-    protected $_canonicalId = null;
+    protected $canonicalID = null;
 
-    protected $_httpRequestOptions = null;
+    protected $httpRequestOptions = array();
+
+    /**
+     * Stores an array of previously performed requests.  The array key is a 
+     * combination of the url, service type, and http request options.
+     * 
+     * @see get()
+     * @var array
+     */
+    protected $requests = array();
 
     /**
      * Constructor; protected since this class is a singleton.
      */
     protected function __construct()
-    {}
+    {
+    }
 
     /**
      * Return a singleton instance of this class.
@@ -127,56 +141,60 @@ class Services_Yadis_Xri
      */
     public static function getInstance()
     {
-        if (is_null(self::$_instance)) {
-            self::$_instance = new self;
+        if (self::$instance === null) {
+            self::$instance = new self;
         }
-        return self::$_instance;
+        return self::$instance;
     }
 
     /**
      * Set a Namespace object which contains all relevant namespaces
      * for XPath queries on this Yadis resource.
      *
-     * @param Services_Yadis_Xrds_Namespace
+     * @param Services_Yadis_Xrds_Namespace $namespace Instance
+     *
      * @return Services_Yadis_Xri
      */
     public function setNamespace(Services_Yadis_Xrds_Namespace $namespace)
     {
-        $this->_namespace = $namespace;
+        $this->namespace = $namespace;
         return $this;
     }
 
     /**
      * Set an XRI proxy URI. A default of "http://xri.net/" is available.
      *
-     * @param   string $proxy
-     * @return  Services_Yadis_Xri
-     * @throws  Services_Yadis_Exception
+     * @param string $proxy The Proxy server URI
+     *
+     * @return Services_Yadis_Xri
+     * @throws Services_Yadis_Exception
      */
     public function setProxy($proxy)
     {
         if (!Validate::uri($proxy)) {
-            require_once 'Services/Yadis/Exception.php';
-            throw new Services_Yadis_Exception('Invalid URI; unable to set as an XRI proxy');
+            throw new Services_Yadis_Exception(
+                'Invalid URI; unable to set as an XRI proxy'
+            );
         }
-        $this->_proxy = $proxy;
+        $this->proxy = $proxy;
         return $this;
     }
 
     /**
      * Return the URI of the current proxy.
      *
-     * @param string $proxy
+     * @return string
      */
     public function getProxy()
     {
-        return $this->_proxy;
+        return $this->proxy;
     }
 
     /**
      * Set an XRI to be translated to a URI.
      *
-     * @param  string $url
+     * @param string $xri XRI to be translated
+     *
      * @return Services_Yadis_Xri
      * @throws Services_Yadis_Exception
      */
@@ -185,11 +203,12 @@ class Services_Yadis_Xri
         /**
          * Check if the passed string is a likely XRI.
          */
-        if (stripos($xri, 'xri://') === false && !in_array($xri[0], $this->_xriIdentifiers)) {
-            require_once 'Services/Yadis/Exception.php';
+        if (stripos($xri, 'xri://') === false
+            && !in_array($xri[0], $this->xriIdentifiers)) {
+
             throw new Services_Yadis_Exception('Invalid XRI string submitted');
         }
-        $this->_xri = $xri;
+        $this->xri = $xri;
         return $this;
     }
 
@@ -200,7 +219,7 @@ class Services_Yadis_Xri
      */
     public function getXri()
     {
-        return $this->_xri;
+        return $this->xri;
     }
 
     /**
@@ -208,7 +227,9 @@ class Services_Yadis_Xri
      * removing the "xri://" prefix and appending the remainder to the URI of
      * an XRI proxy such as "http://xri.net/".
      *
-     * @param  string $xri
+     * @param string $xri         XRI
+     * @param string $serviceType The Service Type
+     *
      * @return string
      * @throws Services_Yadis_Exception
      * @uses Validate
@@ -221,14 +242,15 @@ class Services_Yadis_Xri
         if (isset($xri)) {
             $this->setXri($xri);
         }
+
         /**
          * Get rid of the xri:// prefix before assembling the URI
          * including any IP or DNS wildcards
          */
-        if (stripos($this->_xri, 'xri://') == 0) {
-            if (stripos($this->_xri, 'xri://$ip*') == 0) {
+        if (stripos($this->xri, 'xri://') === 0) {
+            if (stripos($this->xri, 'xri://$ip*') === 0) {
                 $iname = substr($xri, 10);
-            } elseif (stripos($this->_xri, 'xri://$dns*') == 0) {
+            } elseif (stripos($this->xri, 'xri://$dns*') === 0) {
                 $iname = substr($xri, 11);
             } else {
                 $iname = substr($xri, 6);
@@ -238,10 +260,12 @@ class Services_Yadis_Xri
         }
         $uri = $this->getProxy() . $iname;
         if (!Validate::uri($uri)) {
-            require_once 'Services/Yadis/Exception.php';
-            throw new Services_Yadis_Exception('Unable to translate XRI to a valid URI using proxy: ' . $this->getProxy());
+            throw new Services_Yadis_Exception(
+                'Unable to translate XRI to a valid URI using proxy: '
+                . $this->getProxy()
+            );
         }
-        $this->_uri = $uri;
+        $this->uri = $uri;
         return $uri;
     }
 
@@ -251,60 +275,77 @@ class Services_Yadis_Xri
      * a flexible requirement. OpenID 2.0 requires the use of the Canonical
      * ID instead of the raw i-name. 2idi.com, on the other hand, does not.
      *
+     * @param string $xri The XRI
+     *
      * @todo Imcomplete; requires interface from Yadis main class
-     * @param string $xri
      * @return string
      * @throws Services_Yadis_Exception
      */
     public function toCanonicalId($xri = null)
     {
-        if (!isset($xri) && !isset($this->_uri)) {
-            require_once 'Services/Yadis/Exception.php';
-            throw new Services_Yadis_Exception('No XRI passed as parameter as required unless called after Services_Yadis_Xri:toUri');
+        if (!isset($xri) && !isset($this->uri)) {
+            throw new Services_Yadis_Exception(
+                'No XRI passed as parameter as required unless called after '
+                . 'Services_Yadis_Xri:toUri'
+            );
         } elseif (isset($xri)) {
             $uri = $this->toUri($xri);
         } else {
-            $uri = $this->_uri;
+            $uri = $this->uri;
         }
 
-        $request = $this->_get($uri, $this->getHttpRequestOptions());
-        if (stripos($request->getResponseHeader('Content-Type'), 'application/xrds+xml') === false) {
-            require_once 'Services/Yadis/Exception.php';
-            throw new Services_Yadis_Exception('The response header indicates the response body is not an XRDS document');
+        $request = $this->get($uri, null, $this->getHttpRequestOptions());
+        if (stripos($request->getResponseHeader('Content-Type'),
+                                                'application/xrds+xml') === false) {
+
+            throw new Services_Yadis_Exception(
+                'The response header indicates the response body is not '
+                . 'an XRDS document'
+            );
         }
 
         $xrds = new SimpleXMLElement($request->getResponseBody());
-        $this->_namespace->registerXpathNamespaces($xrds);
-        $this->_canonicalId = $xrds->xpath('/xrd:CanonicalID[last()]');
-        if (!$this->_canonicalId) {
+        $this->namespace->registerXpathNamespaces($xrds);
+        $id                = $xrds->xpath('//xrd:CanonicalID[last()]');
+        $this->canonicalID = (string)array_shift($id);
+        if (!$this->canonicalID) {
             return false;
         }
         throw new Exception('Not yet implemented');
         //var_dump($canonicalIds . __FILE__.__LINE__); exit;
-        return $this->_canonicalId;
+        return $this->canonicalID;
     }
 
+    /**
+     * Gets the Canonical ID
+     * 
+     * @throws Services_Yadis_Exception if the XRI is null
+     * @return string
+     */
     public function getCanonicalId()
     {
-        if (!is_null($this->_canonicalId)) {
-            return $this->_canonicalId;
+        if ($this->canonicalID !== null) {
+            return $this->canonicalID;
         }
-        if (is_null($this->_xri)) {
-            require_once 'Services/Yadis/Exception.php';
-            throw new Services_Yadis_Exception('Unable to get a Canonical Id since no XRI value has been set');
+        if ($this->xri === null) {
+            throw new Services_Yadis_Exception(
+                'Unable to get a Canonical Id since no XRI value has been set'
+            );
         }
-        return $this->toCanonicalId($this->_xri);
+        return $this->toCanonicalId($this->xri);
     }
 
-        /**
+    /**
      * Set options to be passed to the PEAR HTTP_Request constructor
      *
-     * @param array $options
-     * @return void
+     * @param array $options Array of HTTP_Request options
+     *
+     * @return Services_Yadis_Xri
      */
     public function setHttpRequestOptions(array $options)
     {
-        $this->_httpRequestOptions = $options;
+        $this->httpRequestOptions = $options;
+        return $this;
     }
 
     /**
@@ -314,7 +355,7 @@ class Services_Yadis_Xri
      */
     public function getHttpRequestOptions()
     {
-        return $this->_httpRequestOptions;
+        return $this->httpRequestOptions;
     }
 
     /**
@@ -322,13 +363,15 @@ class Services_Yadis_Xri
      * error message that the i-name does not exist, or else return a valid
      * XRD document containing the i-name's Canonical ID.
      *
-     * @param   string $uri
-     * @return  HTTP_Request
-     * @todo    Finish this a bit better using the QXRI rules.
+     * @param string $url         URI
+     * @param string $serviceType Optional service type
+     *
+     * @return HTTP_Request
+     * @todo   Finish this a bit better using the QXRI rules.
      */
-    protected function _get($url, $serviceType = null, array $options = null)
+    protected function get($url, $serviceType = null)
     {
-        $request = new HTTP_Request($url, $options);
+        $request = new HTTP_Request($url, $this->getHttpRequestOptions());
         $request->setMethod(HTTP_REQUEST_METHOD_GET);
         $request->addHeader('Accept', 'application/xrds+xml');
         if ($serviceType) {
@@ -340,11 +383,13 @@ class Services_Yadis_Xri
 
         $response = $request->sendRequest();
         if (PEAR::isError($response)) {
-            require_once 'Services/Yadis/Exception.php';
-            throw new Services_Yadis_Exception('Invalid response to Yadis protocol received: ' . $request->getResponseCode() . ' ' . $request->getResponseBody());
+            throw new Services_Yadis_Exception(
+                'Invalid response to Yadis protocol received: ' 
+                . $request->getResponseCode() . ' ' . $request->getResponseBody()
+            );
         }
 
         return $request;
     }
-
 }
+?>
