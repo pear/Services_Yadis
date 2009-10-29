@@ -178,7 +178,25 @@ class Services_Yadis_Xrds
         if (array_key_exists('xrd', $namespaces) && $namespaces['xrd'] != 'xri://$xrd*($v*2.0)') {
             return null;
         } elseif (array_key_exists('', $namespaces) && $namespaces[''] != 'xri://$xrd*($v*2.0)') {
-            return null;
+            // Hack for the namespace declaration in the XRD node, which SimpleXML misses
+            $xrdHack = false;
+            if (!isset($xrds->XRD)) {
+                return null;
+            }
+
+            foreach ($xrds->XRD as $xrd) {
+                $namespaces = $xrd->getNamespaces();
+                if (array_key_exists('', $namespaces)
+                    && $namespaces[''] == 'xri://$xrd*($v*2.0)') {
+
+                    $xrdHack = true;
+                    break;
+                }
+            }
+
+            if (!$xrdHack) {
+                return null;
+            }
         }
 
         /**

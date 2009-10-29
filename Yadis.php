@@ -306,10 +306,6 @@ class Services_Yadis
 
             $xri->setHttpRequestOptions($this->getHttpRequestOptions());
             $this->yadisUrl = $xri->setNamespace($this->namespace)->toUri($yadisId);
-
-            $cid = Services_Yadis_Xri::getInstance()->getCanonicalId();
-            // not cool but it's a future enhancement
-            exit(__LINE__ .' '. 'Services/Yadis.php' . '\nNot implemented yet');
             return $this;
         }
 
@@ -406,6 +402,14 @@ class Services_Yadis
         $xrdsDocument = null;
         $request      = null;
         $xrdStatus    = false;
+
+        // Check XRI first
+        if (in_array($this->yadisId[0], $this->xriIdentifiers)) {
+            $xri  = Services_Yadis_Xri::getInstance();
+            $xrds = $xri->toCanonicalID($xri->getXri());
+            echo $xrds->asXML();exit;
+            return new Services_Yadis_Xrds_Service($xrds, $this->namespace);
+        }
 
         while ($xrdsDocument === null) {
             $request = $this->get($currentUri);
