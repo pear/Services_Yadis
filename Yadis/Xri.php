@@ -309,11 +309,11 @@ class Services_Yadis_Xri
         $id                = $xrds->xpath('//xrd:CanonicalID[last()]');
         $this->canonicalID = (string)array_shift($id);
         if (!$this->canonicalID) {
-            return false;
+            throw new Services_Yadis_Exception(
+                'Unable to determine canonicalID'
+            );
         }
-        throw new Exception('Not yet implemented');
-        //var_dump($canonicalIds . __FILE__.__LINE__); exit;
-        return $this->canonicalID;
+        return $xrds;
     }
 
     /**
@@ -332,7 +332,8 @@ class Services_Yadis_Xri
                 'Unable to get a Canonical Id since no XRI value has been set'
             );
         }
-        return $this->toCanonicalId($this->xri);
+        $this->toCanonicalId($this->xri);
+        return $this->canonicalID;
     }
 
     /**

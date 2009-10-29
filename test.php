@@ -3,7 +3,8 @@
 set_include_path(dirname(__FILE__) . PATH_SEPARATOR . get_include_path());
 
 require_once 'Services/Yadis.php';
-$yadis = new Services_Yadis('http://padraic.astrumfutura.com');
+// $yadis = new Services_Yadis('http://www.yahoo.com/');
+$yadis = new Services_Yadis('=self*shupp');
 $serviceList = $yadis->discover();
 foreach ($serviceList as $service) {
     $types = $service->getTypes();
