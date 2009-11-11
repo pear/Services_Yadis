@@ -407,6 +407,7 @@ class Services_Yadis
         if (in_array($this->yadisId[0], $this->xriIdentifiers)) {
             $xri  = Services_Yadis_Xri::getInstance();
             $xrds = $xri->toCanonicalID($xri->getXri());
+            echo $xrds->asXML();exit;
             return new Services_Yadis_Xrds_Service($xrds, $this->namespace);
         }
 
@@ -500,6 +501,10 @@ class Services_Yadis
      */
     public function getHttpRequest()
     {
+        if ($this->httpRequest === null) {
+            $this->httpRequest = new HTTP_Request('',
+                                                  $this->getHttpRequestOptions());
+        }
         return $this->httpRequest;
     }
 
@@ -536,11 +541,8 @@ class Services_Yadis
      */
     protected function get($url)
     {
-        if ($this->getHttpRequest() === null) {
-            $request = new HTTP_Request($url, $this->getHttpRequestOptions());
-        } else {
-            $request = $this->getHttpRequest();
-        }
+        $request = $this->getHttpRequest();
+        $request->setURL($url);
         $request->setMethod(HTTP_REQUEST_METHOD_GET);
         $request->addHeader('Accept', 'application/xrds+xml');
         $response = $request->sendRequest();
