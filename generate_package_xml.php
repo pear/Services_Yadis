@@ -30,7 +30,7 @@ $packagexml->setDescription("Implementation of the Yadis Specification 1.0 proto
 $packagexml->setChannel('pear.php.net');
 
 $notes = <<<EOT
-* Store local copy of HTTP_Request so that we can get access to the headers.
+* Removed XRI debugging that should not have been committed
 EOT;
 $packagexml->setNotes($notes);
 
@@ -49,8 +49,8 @@ $packagexml->setLicense('New BSD License', 'http://opensource.org/licenses/bsd-l
 $packagexml->addRelease();
 $packagexml->generateContents();
 
-$packagexml->setAPIVersion('0.3.1');
-$packagexml->setReleaseVersion('0.3.1');
+$packagexml->setAPIVersion('0.3.2');
+$packagexml->setReleaseVersion('0.3.2');
 $packagexml->setReleaseStability('beta');
 $packagexml->setAPIStability('beta');
 

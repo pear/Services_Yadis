@@ -13,11 +13,11 @@
   <email>shupp@php.net</email>
   <active>yes</active>
  </lead>
- <date>2009-11-10</date>
- <time>16:08:16</time>
+ <date>2009-11-14</date>
+ <time>21:51:38</time>
  <version>
-  <release>0.3.1</release>
-  <api>0.3.1</api>
+  <release>0.3.2</release>
+  <api>0.3.2</api>
  </version>
  <stability>
   <release>beta</release>
@@ -25,7 +25,7 @@
  </stability>
  <license uri="http://opensource.org/licenses/bsd-license.php">New BSD License</license>
  <notes>
-* Store local copy of HTTP_Request so that we can get access to the headers.
+* Removed XRI debugging that should not have been committed
  </notes>
  <contents>
   <dir baseinstalldir="Services" name="/">
@@ -92,17 +92,17 @@
  <changelog>
   <release>
    <version>
-    <release>0.3.1</release>
-    <api>0.3.1</api>
+    <release>0.3.2</release>
+    <api>0.3.2</api>
    </version>
    <stability>
     <release>beta</release>
     <api>beta</api>
    </stability>
-   <date>2009-11-10</date>
+   <date>2009-11-14</date>
    <license uri="http://opensource.org/licenses/bsd-license.php">New BSD License</license>
    <notes>
-* Store local copy of HTTP_Request so that we can get access to the headers.
+* Removed XRI debugging that should not have been committed
    </notes>
   </release>
  </changelog>
