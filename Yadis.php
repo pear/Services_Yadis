@@ -407,7 +407,6 @@ class Services_Yadis
         if (in_array($this->yadisId[0], $this->xriIdentifiers)) {
             $xri  = Services_Yadis_Xri::getInstance();
             $xrds = $xri->toCanonicalID($xri->getXri());
-            echo $xrds->asXML();exit;
             return new Services_Yadis_Xrds_Service($xrds, $this->namespace);
         }
 
