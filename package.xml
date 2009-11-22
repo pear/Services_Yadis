@@ -13,8 +13,8 @@
   <email>shupp@php.net</email>
   <active>yes</active>
  </lead>
- <date>2009-11-14</date>
- <time>21:51:38</time>
+ <date>2009-11-22</date>
+ <time>14:07:14</time>
  <version>
   <release>0.3.2</release>
   <api>0.3.2</api>
@@ -28,7 +28,23 @@
 * Removed XRI debugging that should not have been committed
  </notes>
  <contents>
-  <dir baseinstalldir="Services" name="/">
+  <dir baseinstalldir="/" name="/">
+   <dir name="examples">
+    <file name="test.php" role="doc" />
+   </dir> <!-- /examples -->
+   <dir name="Services">
+    <dir name="Yadis">
+     <dir name="Xrds">
+      <file name="Namespace.php" role="php" />
+      <file name="Service.php" role="php" />
+     </dir> <!-- /Services/Yadis/Xrds -->
+     <file name="Exception.php" role="php" />
+     <file name="Service.php" role="php" />
+     <file name="Xrds.php" role="php" />
+     <file name="Xri.php" role="php" />
+    </dir> <!-- /Services/Yadis -->
+    <file name="Yadis.php" role="php" />
+   </dir> <!-- /Services -->
    <dir name="tests">
     <dir name="Yadis">
      <dir name="Xrds">
@@ -42,18 +58,6 @@
     <file name="TestConfiguration.php.dist" role="test" />
     <file name="TestHelper.php" role="test" />
    </dir> <!-- /tests -->
-   <dir name="Yadis">
-    <dir name="Xrds">
-     <file name="Namespace.php" role="php" />
-     <file name="Service.php" role="php" />
-    </dir> <!-- /Yadis/Xrds -->
-    <file name="Exception.php" role="php" />
-    <file name="Service.php" role="php" />
-    <file name="Xrds.php" role="php" />
-    <file name="Xri.php" role="php" />
-   </dir> <!-- /Yadis -->
-   <file name="test.php" role="php" />
-   <file name="Yadis.php" role="php" />
   </dir> <!-- / -->
  </contents>
  <dependencies>
@@ -99,7 +103,7 @@
     <release>beta</release>
     <api>beta</api>
    </stability>
-   <date>2009-11-14</date>
+   <date>2009-11-22</date>
    <license uri="http://opensource.org/licenses/bsd-license.php">New BSD License</license>
    <notes>
 * Removed XRI debugging that should not have been committed
