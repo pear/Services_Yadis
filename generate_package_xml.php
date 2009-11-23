@@ -30,7 +30,7 @@ $packagexml->setDescription("Implementation of the Yadis Specification 1.0 proto
 $packagexml->setChannel('pear.php.net');
 
 $notes = <<<EOT
-* Removed XRI debugging that should not have been committed
+* Moved to HTTP_Request2
 EOT;
 $packagexml->setNotes($notes);
 
@@ -39,6 +39,7 @@ $packagexml->setPearinstallerDep('1.4.0b1');
 $packagexml->addPackageDepWithChannel('required', 'PEAR', 'pear.php.net', '1.3.6');
 $packagexml->addPackageDepWithChannel('required', 'HTTP_Request', 'pear.php.net');
 $packagexml->addPackageDepWithChannel('required', 'Validate', 'pear.php.net');
+$packagexml->addPackageDepWithChannel('required', 'Net_URL2', 'pear.php.net');
 $packagexml->addExtensionDep('required', 'simplexml');
 $packagexml->addExtensionDep('required', 'date');
 $packagexml->addExtensionDep('required', 'dom');
@@ -49,8 +50,8 @@ $packagexml->setLicense('New BSD License', 'http://opensource.org/licenses/bsd-l
 $packagexml->addRelease();
 $packagexml->generateContents();
 
-$packagexml->setAPIVersion('0.3.2');
-$packagexml->setReleaseVersion('0.3.2');
+$packagexml->setAPIVersion('0.4.0');
+$packagexml->setReleaseVersion('0.4.0');
 $packagexml->setReleaseStability('beta');
 $packagexml->setAPIStability('beta');
 
