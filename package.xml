@@ -14,10 +14,10 @@
   <active>yes</active>
  </lead>
  <date>2009-11-22</date>
- <time>14:07:14</time>
+ <time>17:58:04</time>
  <version>
-  <release>0.3.2</release>
-  <api>0.3.2</api>
+  <release>0.4.0</release>
+  <api>0.4.0</api>
  </version>
  <stability>
   <release>beta</release>
@@ -25,7 +25,7 @@
  </stability>
  <license uri="http://opensource.org/licenses/bsd-license.php">New BSD License</license>
  <notes>
-* Removed XRI debugging that should not have been committed
+* Moved to HTTP_Request2
  </notes>
  <contents>
   <dir baseinstalldir="/" name="/">
@@ -81,6 +81,10 @@
     <name>Validate</name>
     <channel>pear.php.net</channel>
    </package>
+   <package>
+    <name>Net_URL2</name>
+    <channel>pear.php.net</channel>
+   </package>
    <extension>
     <name>simplexml</name>
    </extension>
@@ -96,8 +100,8 @@
  <changelog>
   <release>
    <version>
-    <release>0.3.2</release>
-    <api>0.3.2</api>
+    <release>0.4.0</release>
+    <api>0.4.0</api>
    </version>
    <stability>
     <release>beta</release>
@@ -106,7 +110,7 @@
    <date>2009-11-22</date>
    <license uri="http://opensource.org/licenses/bsd-license.php">New BSD License</license>
    <notes>
-* Removed XRI debugging that should not have been committed
+* Moved to HTTP_Request2
    </notes>
   </release>
  </changelog>

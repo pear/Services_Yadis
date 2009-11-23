@@ -41,8 +41,11 @@
  * @link     http://pear.php.net/package/services_yadis
  */
 
-/** HTTP_Request */
-require_once 'HTTP/Request.php';
+/** HTTP_Request2 */
+require_once 'HTTP/Request2.php';
+
+/** Net_URL2 */
+require_once 'Net/URL2.php';
 
 /** Services_Yadis_Exception */
 require_once 'Services/Yadis/Exception.php';
@@ -126,6 +129,13 @@ class Services_Yadis_Xri
      * @var array
      */
     protected $requests = array();
+
+    /**
+     * The last response using HTTP_Request2
+     * 
+     * @var HTTP_Request2_Response
+     */
+    protected $httpResponse = null;
 
     /**
      * Constructor; protected since this class is a singleton.
@@ -294,9 +304,9 @@ class Services_Yadis_Xri
             $uri = $this->uri;
         }
 
-        $request = $this->get($uri, null, $this->getHttpRequestOptions());
-        if (stripos($request->getResponseHeader('Content-Type'),
-                                                'application/xrds+xml') === false) {
+        $this->httpResponse = $this->get($uri, null, $this->getHttpRequestOptions());
+        if (stripos($this->httpResponse->getHeader('Content-Type'),
+                                               'application/xrds+xml') === false) {
 
             throw new Services_Yadis_Exception(
                 'The response header indicates the response body is not '
@@ -304,7 +314,7 @@ class Services_Yadis_Xri
             );
         }
 
-        $xrds = new SimpleXMLElement($request->getResponseBody());
+        $xrds = new SimpleXMLElement($this->httpResponse->getBody());
         $this->namespace->registerXpathNamespaces($xrds);
         $id                = $xrds->xpath('//xrd:CanonicalID[last()]');
         $this->canonicalID = (string)array_shift($id);
@@ -337,9 +347,9 @@ class Services_Yadis_Xri
     }
 
     /**
-     * Set options to be passed to the PEAR HTTP_Request constructor
+     * Set options to be passed to the PEAR HTTP_Request2 constructor
      *
-     * @param array $options Array of HTTP_Request options
+     * @param array $options Array of HTTP_Request2 options
      *
      * @return Services_Yadis_Xri
      */
@@ -350,7 +360,7 @@ class Services_Yadis_Xri
     }
 
     /**
-     * Get options to be passed to the PEAR HTTP_Request constructor
+     * Get options to be passed to the PEAR HTTP_Request2 constructor
      *
      * @return array
      */
@@ -372,25 +382,38 @@ class Services_Yadis_Xri
      */
     protected function get($url, $serviceType = null)
     {
-        $request = new HTTP_Request($url, $this->getHttpRequestOptions());
-        $request->setMethod(HTTP_REQUEST_METHOD_GET);
-        $request->addHeader('Accept', 'application/xrds+xml');
+        $request = new HTTP_Request2($url,
+                                     HTTP_Request2::METHOD_GET,
+                                     $this->getHttpRequestOptions());
+
+        $netURL = new Net_URL2($url);
+        $request->setHeader('Accept', 'application/xrds+xml');
         if ($serviceType) {
-            $request->addQueryString('_xrd_r', 'application/xrds+xml');
-            $request->addQueryString('_xrd_t', $serviceType);
+            $netURL->setQueryVariable('_xrd_r', 'application/xrds+xml');
+            $netURL->setQueryVariable('_xrd_t', $serviceType);
         } else {
-            $request->addQueryString('_xrd_r', 'application/xrds+xml;sep=false');
+            $netURL->setQueryVariable('_xrd_r', 'application/xrds+xml;sep=false');
         }
 
-        $response = $request->sendRequest();
-        if (PEAR::isError($response)) {
+        $request->setURL($netURL->getURL());
+        try {
+            return $request->send();
+        } catch (HTTP_Request2_Exception $e) {
             throw new Services_Yadis_Exception(
-                'Invalid response to Yadis protocol received: ' 
-                . $request->getResponseCode() . ' ' . $request->getResponseBody()
+                'Invalid response to Yadis protocol received: ' . $e->getMessage(),
+                $e->getCode()
             );
         }
+    }
 
-        return $request;
+    /**
+     * Returns the most recent HTTP_Request2_Response object.
+     * 
+     * @return HTTP_Request2_Response|null
+     */
+    public function getHTTPResponse()
+    {
+        return $this->httpResponse;
     }
 }
 ?>

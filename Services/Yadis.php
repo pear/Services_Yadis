@@ -48,7 +48,7 @@ require_once 'Services/Yadis/Xrds/Service.php';
 require_once 'Services/Yadis/Exception.php';
 require_once 'Services/Yadis/Xrds/Namespace.php';
 require_once 'Services/Yadis/Xri.php';
-require_once 'HTTP/Request.php';
+require_once 'HTTP/Request2.php';
 require_once 'Validate.php';
 
 /**
@@ -125,15 +125,11 @@ class Services_Yadis
     protected $yadisUrl = '';
 
     /**
-     * Holds the first response received during Service Discovery.
+     * Holds the response received during Service Discovery.
      *
-     * This is required to allow certain Service specific fallback methods.
-     * For example, OpenID allows a Yadis fallback which relies on seeking a
-     * set of appropriate <link> elements.
-     *
-     * @var HTTP_Request
+     * @var HTTP_Request2_Response
      */
-    protected $metaHttpEquivResponse = null;
+    protected $httpResponse = null;
 
     /**
      * A URL parsed from a HTML document's <meta> element inserted in
@@ -190,9 +186,9 @@ class Services_Yadis
     protected $httpRequestOptions = array();
 
     /**
-     * HTTP_Request object utilised by this class if externally set
+     * HTTP_Request2 object utilised by this class if externally set
      *
-     * @var HTTP_Request
+     * @var HTTP_Request2
      */
     protected $httpRequest = null;
 
@@ -220,7 +216,7 @@ class Services_Yadis
     }
 
     /**
-     * Set options to be passed to the PEAR HTTP_Request constructor
+     * Set options to be passed to the PEAR HTTP_Request2 constructor
      *
      * @param array $options Array of options for HTTP_Request
      *
@@ -233,7 +229,7 @@ class Services_Yadis
     }
 
     /**
-     * Get options to be passed to the PEAR HTTP_Request constructor
+     * Get options to be passed to the PEAR HTTP_Request2 constructor
      *
      * @return array
      */
@@ -306,6 +302,7 @@ class Services_Yadis
 
             $xri->setHttpRequestOptions($this->getHttpRequestOptions());
             $this->yadisUrl = $xri->setNamespace($this->namespace)->toUri($yadisId);
+
             return $this;
         }
 
@@ -405,17 +402,16 @@ class Services_Yadis
 
         // Check XRI first
         if (in_array($this->yadisId[0], $this->xriIdentifiers)) {
-            $xri  = Services_Yadis_Xri::getInstance();
-            $xrds = $xri->toCanonicalID($xri->getXri());
+            $xri                = Services_Yadis_Xri::getInstance();
+            $xrds               = $xri->toCanonicalID($xri->getXri());
+            $this->httpResponse = $xri->getHTTPResponse();
+
             return new Services_Yadis_Xrds_Service($xrds, $this->namespace);
         }
 
         while ($xrdsDocument === null) {
-            $request = $this->get($currentUri);
-            if (!$this->metaHttpEquivResponse) {
-                $this->metaHttpEquivResponse = $request;
-            }
-            $responseType = $this->getResponseType($request);
+            $this->httpResponse = $this->get($currentUri);
+            $responseType = $this->getResponseType($this->httpResponse);
 
             /**
              * If prior response type was a location header, or a http-equiv
@@ -446,7 +442,7 @@ class Services_Yadis
                 $currentUri = $this->metaHttpEquivUrl;
                 break;
             case self::XRDS_CONTENT_TYPE:
-                $xrdsDocument = $request->getResponseBody();
+                $xrdsDocument = $this->httpResponse->getBody();
                 break;
             default:
                 throw new Services_Yadis_Exception(
@@ -466,92 +462,89 @@ class Services_Yadis
     }
 
     /**
-     * Return the very first response received when using a valid Yadis URL.
-     * This is important for Services, like OpenID, which can attempt a
-     * fallback solution in case Yadis fails, and the response came from a
-     * user's personal URL acting as an alias.
+     * Return the final HTTP response
      *
-     * @return string|boolean
+     * @return HTTP_Request2_Response
      */
-    public function getUserResponse()
+    public function getHTTPResponse()
     {
-        if ($this->metaHttpEquivResponse instanceof HTTP_Request) {
-            return $this->metaHttpEquivResponse->getResponseBody();
+        if ($this->httpResponse instanceof HTTP_Request2_Response) {
+            return $this->httpResponse;
         }
-        return false;
+        return null;
     }
 
     /**
-     * Setter for custom HTTP_Request type object
+     * Setter for custom HTTP_Request2 type object
      *
-     * @param HTTP_Request $request Instance of HTTP_Request
+     * @param HTTP_Request2 $request Instance of HTTP_Request2
      *
      * @return void
      */
-    public function setHttpRequest(HTTP_Request $request)
+    public function setHttpRequest(HTTP_Request2 $request)
     {
         $this->httpRequest = $request;
     }
 
     /**
-     * Gets the HTTP_Request object
+     * Gets the HTTP_Request2 object
      *
-     * @return HTTP_Request
+     * @return HTTP_Request2
      */
     public function getHttpRequest()
     {
         if ($this->httpRequest === null) {
-            $this->httpRequest = new HTTP_Request('',
-                                                  $this->getHttpRequestOptions());
+            $this->httpRequest = new HTTP_Request2();
+            $this->httpRequest->setConfig($this->getHttpRequestOptions());
         }
         return $this->httpRequest;
     }
 
     /**
-     * Run any instance of HTTP_Request through a set of filters to
+     * Run any instance of HTTP_Request2_Response through a set of filters to
      * determine the Yadis Response type which in turns determines how the
      * response should be reacted to or dealt with.
      *
-     * @param HTTP_Request $request Instance of HTTP_Request
+     * @param HTTP_Request2_Response $request Instance of HTTP_Request2_Response
      *
      * @return integer
      */
-    protected function getResponseType(HTTP_Request $request)
+    protected function getResponseType(HTTP_Request2_Response $response)
     {
-        if ($this->isXrdsLocationHeader($request)) {
+        if ($this->isXrdsLocationHeader($response)) {
             return self::XRDS_LOCATION_HEADER;
-        } elseif ($this->isXrdsContentType($request)) {
+        } elseif ($this->isXrdsContentType($response)) {
             return self::XRDS_CONTENT_TYPE;
-        } elseif ($this->isMetaHttpEquiv($request)) {
+        } elseif ($this->isMetaHttpEquiv($response)) {
             return self::XRDS_META_HTTP_EQUIV;
         }
         return false;
     }
 
     /**
-     * Use the HTTP_Request to issue an HTTP GET request carrying the
+     * Use the HTTP_Request2 to issue an HTTP GET request carrying the
      * "Accept" header value of "application/xrds+xml". This can allow
      * servers to quickly respond with a valid XRD document rather than
      * forcing the client to follow the X-XRDS-Location bread crumb trail.
      *
      * @param string $url URL
      *
-     * @return HTTP_Request
+     * @return HTTP_Request2
      */
     protected function get($url)
     {
         $request = $this->getHttpRequest();
-        $request->setURL($url);
-        $request->setMethod(HTTP_REQUEST_METHOD_GET);
-        $request->addHeader('Accept', 'application/xrds+xml');
-        $response = $request->sendRequest();
-        if (PEAR::isError($response)) {
+        $request->setUrl($url);
+        $request->setMethod(HTTP_REQUEST2::METHOD_GET);
+        $request->setHeader('Accept', 'application/xrds+xml');
+        try {
+            return $request->send();
+        } catch (HTTP_Request2_Exception $e) {
             throw new Services_Yadis_Exception(
-                'Invalid response to Yadis protocol received: ' 
-                . $request->getResponseCode() . ' ' . $request->getResponseBody()
+                'Invalid response to Yadis protocol received: ' . $e->getMessage(),
+                $e->getMessage()
             );
         }
-        return $request;
     }
 
     /**
@@ -559,16 +552,16 @@ class Services_Yadis
      * we can find the XRDS resource for this user. If exists, the value
      * is set to the private $xrdsLocationHeaderUrl property.
      *
-     * @param HTTP_Request $request Instance of HTTP_Request
+     * @param HTTP_Request2_Response $response Instance of HTTP_Request2_Response
      *
      * @return boolean
      */
-    protected function isXrdsLocationHeader(HTTP_Request $request)
+    protected function isXrdsLocationHeader(HTTP_Request2_Response $response)
     {
-        if ($request->getResponseHeader('x-xrds-location')) {
-            $location = $request->getResponseHeader('x-xrds-location');
-        } elseif ($request->getResponseHeader('x-yadis-location')) {
-            $location = $request->getResponseHeader('x-yadis-location');
+        if ($response->getHeader('x-xrds-location')) {
+            $location = $response->getHeader('x-xrds-location');
+        } elseif ($response->getHeader('x-yadis-location')) {
+            $location = $response->getHeader('x-yadis-location');
         }
         if (empty($location)) {
             return false;
@@ -586,14 +579,14 @@ class Services_Yadis
      * Checks whether the Response contains the XRDS resource. It should, per
      * the specifications always be served as application/xrds+xml
      *
-     * @param HTTP_Request $request Instance of HTTP_Request
+     * @param HTTP_Request2_Response $response Instance of HTTP_Request2_Response
      *
      * @return boolean
      */
-    protected function isXrdsContentType(HTTP_Request $request)
+    protected function isXrdsContentType(HTTP_Request2_Response $response)
     {
-        if (!$request->getResponseHeader('Content-Type')
-            || stripos($request->getResponseHeader('Content-Type'),
+        if (!$response->getHeader('Content-Type')
+            || stripos($response->getHeader('Content-Type'),
                        'application/xrds+xml') === false) {
 
             return false;
@@ -607,15 +600,15 @@ class Services_Yadis
      * has a http-equiv meta element with a content attribute pointing to where
      * we can fetch the XRD document.
      *
-     * @param HTTP_Request $request Instance of HTTP_Request
+     * @param HTTP_Request2_Response $response Instance of HTTP_Request2_Response
      *
      * @return boolean
      * @throws Services_Yadis_Exception
      */
-    protected function isMetaHttpEquiv(HTTP_Request $request)
+    protected function isMetaHttpEquiv(HTTP_Request2_Response $response)
     {
         $location = null;
-        if (!in_array($request->getResponseHeader('Content-Type'),
+        if (!in_array($response->getHeader('Content-Type'),
                       $this->validHtmlContentTypes)) {
 
             return false;
@@ -627,7 +620,7 @@ class Services_Yadis
          * exist.
          */
         $html = new DOMDocument();
-        $html->loadHTML($request->getResponseBody());
+        $html->loadHTML($response->getBody());
         $head = $html->getElementsByTagName('head');
         if ($head->length > 0) {
             $metas = $head->item(0)->getElementsByTagName('meta');
@@ -677,3 +670,5 @@ class Services_Yadis
     }
 
 }
+
+?>
