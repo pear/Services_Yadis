@@ -37,7 +37,7 @@ $packagexml->setNotes($notes);
 $packagexml->setPhpDep('5.2.0');
 $packagexml->setPearinstallerDep('1.4.0b1');
 $packagexml->addPackageDepWithChannel('required', 'PEAR', 'pear.php.net', '1.3.6');
-$packagexml->addPackageDepWithChannel('required', 'HTTP_Request', 'pear.php.net');
+$packagexml->addPackageDepWithChannel('required', 'HTTP_Request2', 'pear.php.net', '0.5.1');
 $packagexml->addPackageDepWithChannel('required', 'Validate', 'pear.php.net');
 $packagexml->addPackageDepWithChannel('required', 'Net_URL2', 'pear.php.net');
 $packagexml->addExtensionDep('required', 'simplexml');
