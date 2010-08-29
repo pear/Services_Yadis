@@ -511,10 +511,10 @@ class Services_Yadis
      */
     protected function getResponseType(HTTP_Request2_Response $response)
     {
-        if ($this->isXrdsLocationHeader($response)) {
-            return self::XRDS_LOCATION_HEADER;
-        } elseif ($this->isXrdsContentType($response)) {
+        if ($this->isXrdsContentType($response)) {
             return self::XRDS_CONTENT_TYPE;
+        } elseif ($this->isXrdsLocationHeader($response)) {
+            return self::XRDS_LOCATION_HEADER;
         } elseif ($this->isMetaHttpEquiv($response)) {
             return self::XRDS_META_HTTP_EQUIV;
         }
