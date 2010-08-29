@@ -30,13 +30,13 @@ $packagexml->setDescription("Implementation of the Yadis Specification 1.0 proto
 $packagexml->setChannel('pear.php.net');
 
 $notes = <<<EOT
-* Moved to HTTP_Request2
+* Fixed #17829 - redirect loop was happening when X-XRDS-Location was present with the document itself
+* Removed dependency on PEAR_Exception
 EOT;
 $packagexml->setNotes($notes);
 
 $packagexml->setPhpDep('5.2.0');
 $packagexml->setPearinstallerDep('1.4.0b1');
-$packagexml->addPackageDepWithChannel('required', 'PEAR', 'pear.php.net', '1.3.6');
 $packagexml->addPackageDepWithChannel('required', 'HTTP_Request2', 'pear.php.net', '0.5.1');
 $packagexml->addPackageDepWithChannel('required', 'Validate', 'pear.php.net');
 $packagexml->addPackageDepWithChannel('required', 'Net_URL2', 'pear.php.net');
@@ -50,8 +50,8 @@ $packagexml->setLicense('New BSD License', 'http://opensource.org/licenses/bsd-l
 $packagexml->addRelease();
 $packagexml->generateContents();
 
-$packagexml->setAPIVersion('0.4.0');
-$packagexml->setReleaseVersion('0.4.0');
+$packagexml->setAPIVersion('0.5.0');
+$packagexml->setReleaseVersion('0.5.0');
 $packagexml->setReleaseStability('beta');
 $packagexml->setAPIStability('beta');
 

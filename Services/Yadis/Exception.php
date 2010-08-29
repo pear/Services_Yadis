@@ -41,11 +41,6 @@
  */
 
 /**
- * PEAR_Exception
- */
-require_once 'PEAR/Exception.php';
-
-/**
  * Services_Yadis_Exception
  *
  * @category Services
@@ -54,7 +49,7 @@ require_once 'PEAR/Exception.php';
  * @license  http://opensource.org/licenses/bsd-license.php New BSD License
  * @link     http://pear.php.net/package/services_yadis
  */
-class Services_Yadis_Exception extends PEAR_Exception
+class Services_Yadis_Exception extends Exception
 {
 }
 ?>
