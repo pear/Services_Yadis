@@ -16,11 +16,17 @@
   <email>shupp@php.net</email>
   <active>yes</active>
  </lead>
- <date>2010-08-28</date>
- <time>17:17:39</time>
+ <lead>
+  <name>Bill Shupp</name>
+  <user>shupp</user>
+  <email>shupp@php.net</email>
+  <active>yes</active>
+ </lead>
+ <date>2011-01-01</date>
+ <time>12:59:16</time>
  <version>
-  <release>0.5.0</release>
-  <api>0.5.0</api>
+  <release>0.5.1</release>
+  <api>0.5.1</api>
  </version>
  <stability>
   <release>beta</release>
@@ -28,8 +34,7 @@
  </stability>
  <license uri="http://opensource.org/licenses/bsd-license.php">New BSD License</license>
  <notes>
-* Fixed #17829 - redirect loop was happening when X-XRDS-Location was present with the document itself
-* Removed dependency on PEAR_Exception
+* Added Services_Yadis::validateURI() to get around strict warnings
  </notes>
  <contents>
   <dir baseinstalldir="/" name="/">
@@ -98,6 +103,28 @@
     <name>Net_URL2</name>
     <channel>pear.php.net</channel>
    </package>
+   <package>
+    <name>HTTP_Request2</name>
+    <channel>pear.php.net</channel>
+    <min>0.5.1</min>
+   </package>
+   <package>
+    <name>Validate</name>
+    <channel>pear.php.net</channel>
+   </package>
+   <package>
+    <name>Net_URL2</name>
+    <channel>pear.php.net</channel>
+   </package>
+   <extension>
+    <name>simplexml</name>
+   </extension>
+   <extension>
+    <name>date</name>
+   </extension>
+   <extension>
+    <name>dom</name>
+   </extension>
    <extension>
     <name>simplexml</name>
    </extension>
@@ -120,6 +147,21 @@
  </dependencies>
  <phprelease />
  <changelog>
+  <release>
+   <version>
+    <release>0.5.1</release>
+    <api>0.5.1</api>
+   </version>
+   <stability>
+    <release>beta</release>
+    <api>beta</api>
+   </stability>
+   <date>2011-01-01</date>
+   <license uri="http://opensource.org/licenses/bsd-license.php">New BSD License</license>
+   <notes>
+* Added Services_Yadis::validateURI() to get around strict warnings
+   </notes>
+  </release>
   <release>
    <version>
     <release>0.5.0</release>

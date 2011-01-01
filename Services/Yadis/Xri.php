@@ -50,8 +50,8 @@ require_once 'Net/URL2.php';
 /** Services_Yadis_Exception */
 require_once 'Services/Yadis/Exception.php';
 
-/** Validate */
-require_once 'Validate.php';
+/* Services_Yadis */
+require_once 'Services/Yadis.php';
 
 /**
  * Provides methods for translating an XRI into a URI.
@@ -181,7 +181,7 @@ class Services_Yadis_Xri
      */
     public function setProxy($proxy)
     {
-        if (!Validate::uri($proxy)) {
+        if (!Services_Yadis::validateURI($proxy)) {
             throw new Services_Yadis_Exception(
                 'Invalid URI; unable to set as an XRI proxy'
             );
@@ -269,7 +269,7 @@ class Services_Yadis_Xri
             $iname = $xri;
         }
         $uri = $this->getProxy() . $iname;
-        if (!Validate::uri($uri)) {
+        if (!Services_Yadis::validateURI($uri)) {
             throw new Services_Yadis_Exception(
                 'Unable to translate XRI to a valid URI using proxy: '
                 . $this->getProxy()
