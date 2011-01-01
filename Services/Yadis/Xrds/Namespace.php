@@ -41,8 +41,8 @@
  * @link     http://pear.php.net/package/services_yadis
  */
 
-/** Validate */
-require_once 'Validate.php';
+/** Services_Yadis */
+require_once 'Services/Yadis.php';
 
 /** Services_Yadis_Exception */
 require_once 'Services/Yadis/Exception.php';
@@ -103,7 +103,7 @@ class Services_Yadis_Xrds_Namespace
             throw new Services_Yadis_Exception(
                 'Parameters must be non-empty strings'
             );
-        } elseif (!Validate::uri($namespaceUrl)) {
+        } elseif (!Services_Yadis::validateURI($namespaceUrl)) {
             throw new Services_Yadis_Exception(
                 'Invalid namespace URI: '
                 . htmlentities($namespaceUrl, ENT_QUOTES, 'utf-8')

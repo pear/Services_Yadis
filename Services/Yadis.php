@@ -287,7 +287,7 @@ class Services_Yadis
         /**
          * This step should validate IDNs (see ZF-881)
          */
-        if (Validate::uri($yadisId)) {
+        if (self::validateURI($yadisId)) {
             $this->yadisUrl = $yadisId;
             return $this;
         }
@@ -565,7 +565,7 @@ class Services_Yadis
         }
         if (empty($location)) {
             return false;
-        } elseif (!Validate::uri($location)) {
+        } elseif (!self::validateURI($location)) {
             throw new Services_Yadis_Exception(
                 'Invalid URI found during Discovery for location of XRDS document:'
                 . htmlentities($location, ENT_QUOTES, 'utf-8')
@@ -638,7 +638,7 @@ class Services_Yadis
 
         if (is_null($location)) {
             return false;
-        } elseif (!Validate::uri($location)) {
+        } elseif (!self::validateURI($location)) {
             throw new Services_Yadis_Exception(
                 'The URI parsed from the HTML Alias document appears to be invalid, '
                 . 'or could not be found: '
@@ -669,6 +669,23 @@ class Services_Yadis
         return new Services_Yadis_Xrds_Service($xrds, $this->namespace);
     }
 
+    /**
+     * Wrapper for Validate::uri() to avoid non-static strict warnings
+     * 
+     * @param string $uri The URI to validate
+     * 
+     * @return bool
+     */
+    static public function validateURI($uri)
+    {
+        static $validate = null;
+    
+        if ($validate === null) {
+            $validate = new Validate();
+        }
+
+        return $validate->uri($uri);
+    }
 }
 
 ?>
