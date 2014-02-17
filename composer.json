@@ -1,0 +1,41 @@
+{
+    "authors": [
+        {
+            "email": "shupp@php.net",
+            "name": "Bill Shupp",
+            "role": "Lead"
+        },
+        {
+            "email": "shupp@php.net",
+            "name": "Bill Shupp",
+            "role": "Lead"
+        },
+        {
+            "email": "shupp@php.net",
+            "name": "Bill Shupp",
+            "role": "Lead"
+        }
+    ],
+    "autoload": {
+        "psr-0": {
+            "Services_Yadis": "./"
+        }
+    },
+    "description": "More info available on: http://pear.php.net/package/Services_Yadis",
+    "include-path": [
+        "./"
+    ],
+    "license": "New BSD License",
+    "name": "pear/services_yadis",
+    "support": {
+        "issues": "http://pear.php.net/bugs/search.php?cmd=display&package_name[]=Services_Yadis",
+        "source": "https://github.com/pear/Services_Yadis"
+    },
+    "type": "library",
+    "require": {
+        "pear/pear_exception": "*"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "*"
+    }
+}
