@@ -1,0 +1,10 @@
+<phpunit strict="true" colors="true">
+ <php>
+  <includePath>../</includePath>
+ </php>
+ <filter>
+  <whitelist addUncoveredFilesFromWhitelist="true">
+   <directory suffix=".php">../Services/</directory>
+  </whitelist>
+ </filter>
+</phpunit>

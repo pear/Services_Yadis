@@ -542,7 +542,7 @@ class Services_Yadis
         } catch (HTTP_Request2_Exception $e) {
             throw new Services_Yadis_Exception(
                 'Invalid response to Yadis protocol received: ' . $e->getMessage(),
-                $e->getMessage()
+                $e->getCode()
             );
         }
     }
