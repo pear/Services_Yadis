@@ -57,13 +57,10 @@
    <dir name="tests">
     <dir name="Yadis">
      <dir name="Xrds">
-      <file name="AllTests.php" role="test" />
       <file name="NamespaceTest.php" role="test" />
      </dir> <!-- /tests/Yadis/Xrds -->
-     <file name="AllTests.php" role="test" />
      <file name="XrdsTest.php" role="test" />
     </dir> <!-- /tests/Yadis -->
-    <file name="AllTests.php" role="test" />
     <file name="TestConfiguration.php.dist" role="test" />
     <file name="TestHelper.php" role="test" />
    </dir> <!-- /tests -->
