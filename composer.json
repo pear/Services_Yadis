@@ -23,8 +23,8 @@
     },
     "type": "library",
     "require": {
-        "pear/http_request2": ">=2.2.0",
-        "pear/net_url2": ">=2.2.0",
+        "pear/http_request2": "~2.2.0",
+        "pear/net_url2": "~2.2.0",
         "pear/validate": ">=0.8.5"
     },
     "require-dev": {
