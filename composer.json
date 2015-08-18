@@ -11,7 +11,7 @@
             "Services": "./"
         }
     },
-    "description": "More info available on: http://pear.php.net/package/Services_Yadis",
+    "description": "Implementation of the Yadis Specification 1.0 protocol",
     "include-path": [
         "./"
     ],
