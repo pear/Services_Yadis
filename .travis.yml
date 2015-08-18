@@ -1,12 +1,12 @@
 language: php
+sudo: false
 php:
+  - 7
+  - 5.6
   - 5.5
   - 5.4
-  - 5.3
 install:
-  - pear install pear/PHP_CodeSniffer
-  - pear install HTTP_Request2 Net_URL2 Validate-beta
-  - phpenv rehash
+  - pear install http_request2 net_url2 validate-beta
 script:
-#  - phpcs Services
-  - cd tests && phpunit .
+  - cd tests
+  - phpunit --coverage-text .
