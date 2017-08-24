@@ -1,4 +1,13 @@
 {
+    "name": "pear/services_yadis",
+    "description": "Implementation of the Yadis Specification 1.0 protocol",
+    "homepage": "http://pear.php.net/package/Services_Yadis",
+    "support": {
+        "issues": "http://pear.php.net/bugs/search.php?cmd=display&package_name[]=Services_Yadis",
+        "source": "https://github.com/pear/Services_Yadis"
+    },
+    "license": "BSD-2-Clause",
+    "type": "library",
     "authors": [
         {
             "email": "shupp@php.net",
@@ -11,24 +20,15 @@
             "Services": "./"
         }
     },
-    "description": "Implementation of the Yadis Specification 1.0 protocol",
     "include-path": [
         "./"
     ],
-    "license": "New BSD License",
-    "name": "pear/services_yadis",
-    "homepage": "http://pear.php.net/package/Services_Yadis",
-    "support": {
-        "issues": "http://pear.php.net/bugs/search.php?cmd=display&package_name[]=Services_Yadis",
-        "source": "https://github.com/pear/Services_Yadis"
-    },
-    "type": "library",
     "require": {
-        "pear/http_request2": "~2.2.0",
-        "pear/net_url2": "~2.2.0",
+        "pear/http_request2": "^2.2.0",
+        "pear/net_url2": "^2.2.0",
         "pear/validate": ">=0.8.5"
     },
     "require-dev": {
-        "phpunit/phpunit": "*"
+        "phpunit/phpunit": "^5.7"
     }
 }
