@@ -9,15 +9,6 @@ __ http://archive.cweiske.de/yadis/yadis-v1.0.html
 ============
 Installation
 ============
-
-PEAR
-====
-::
-
-    $ pear install services_yadis-alpha
-
-Composer
-========
 ::
 
     $ composer require pear/services_yadis
