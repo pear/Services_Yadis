@@ -41,18 +41,6 @@
  * @link     http://pear.php.net/package/services_yadis
  */
 
-/** HTTP_Request2 */
-require_once 'HTTP/Request2.php';
-
-/** Net_URL2 */
-require_once 'Net/URL2.php';
-
-/** Services_Yadis_Exception */
-require_once 'Services/Yadis/Exception.php';
-
-/* Services_Yadis */
-require_once 'Services/Yadis.php';
-
 /**
  * Provides methods for translating an XRI into a URI.
  *

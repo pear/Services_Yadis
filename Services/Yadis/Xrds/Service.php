@@ -41,12 +41,6 @@
  * @version    $Id$
  */
 
-/** Services_Yadis_Xrds */
-require_once 'Services/Yadis/Xrds.php';
-
-/** Services_Yadis_Service */
-require_once 'Services/Yadis/Service.php';
-
 /**
  * The Services_Yadis_Xrds_Service class is a wrapper for Service elements
  * of an XRD document which is parsed using SimpleXML, and contains methods for

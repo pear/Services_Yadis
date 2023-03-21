@@ -41,12 +41,6 @@
  * @link     http://pear.php.net/package/services_yadis
  */
 
-/** Services_Yadis */
-require_once 'Services/Yadis.php';
-
-/** Services_Yadis_Exception */
-require_once 'Services/Yadis/Exception.php';
-
 /**
  * The Services_Yadis_Xrds_Namespace class is a container for namespaces
  * which need to be registered to an XML parser in order to correctly consume

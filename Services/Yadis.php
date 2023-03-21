@@ -42,16 +42,6 @@
  */
 
 /**
- *  required files
- */
-require_once 'Services/Yadis/Xrds/Service.php';
-require_once 'Services/Yadis/Exception.php';
-require_once 'Services/Yadis/Xrds/Namespace.php';
-require_once 'Services/Yadis/Xri.php';
-require_once 'HTTP/Request2.php';
-require_once 'Validate.php';
-
-/**
  * Services_Yadis class
  *
  * Services_Yadis will provide a method of Service Discovery implemented

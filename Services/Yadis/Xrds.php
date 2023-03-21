@@ -41,9 +41,6 @@
  * @version    $Id$
  */
 
-/** Services_Yadis_Xrds_Namespace */
-require_once 'Services/Yadis/Xrds/Namespace.php';
-
 /**
  * The Services_Yadis_Xrds class is a wrapper for elements of an
  * XRD document which is parsed using SimpleXML, and contains methods for
