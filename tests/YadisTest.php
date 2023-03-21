@@ -15,7 +15,7 @@ class Services_YadisTest extends PHPUnit_Framework_TestCase
         $httpMock->addResponse(
             new HTTP_Request2_Exception('A test error', 500)
         );
-        
+
         $http = new HTTP_Request2();
         $http->setAdapter($httpMock);
 

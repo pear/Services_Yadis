@@ -671,15 +671,15 @@ class Services_Yadis
 
     /**
      * Wrapper for Validate::uri() to avoid non-static strict warnings
-     * 
+     *
      * @param string $uri The URI to validate
-     * 
+     *
      * @return bool
      */
     static public function validateURI($uri)
     {
         static $validate = null;
-    
+
         if ($validate === null) {
             $validate = new Validate();
         }

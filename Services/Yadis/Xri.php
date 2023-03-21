@@ -122,9 +122,9 @@ class Services_Yadis_Xri
     protected $httpRequestOptions = array();
 
     /**
-     * Stores an array of previously performed requests.  The array key is a 
+     * Stores an array of previously performed requests.  The array key is a
      * combination of the url, service type, and http request options.
-     * 
+     *
      * @see get()
      * @var array
      */
@@ -132,7 +132,7 @@ class Services_Yadis_Xri
 
     /**
      * The last response using HTTP_Request2
-     * 
+     *
      * @var HTTP_Request2_Response
      */
     protected $httpResponse = null;
@@ -328,7 +328,7 @@ class Services_Yadis_Xri
 
     /**
      * Gets the Canonical ID
-     * 
+     *
      * @throws Services_Yadis_Exception if the XRI is null
      * @return string
      */
@@ -408,7 +408,7 @@ class Services_Yadis_Xri
 
     /**
      * Returns the most recent HTTP_Request2_Response object.
-     * 
+     *
      * @return HTTP_Request2_Response|null
      */
     public function getHTTPResponse()

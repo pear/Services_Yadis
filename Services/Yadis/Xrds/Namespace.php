@@ -6,7 +6,7 @@
  * PHP version 5
  *
  * LICENSE:
- * 
+ *
  * Copyright (c) 2007 Pádraic Brady <padraic.brady@yahoo.com>
  * All rights reserved.
  *
@@ -17,9 +17,9 @@
  *    * Redistributions of source code must retain the above copyright
  *      notice, this list of conditions and the following disclaimer.
  *    * Redistributions in binary form must reproduce the above copyright
- *      notice, this list of conditions and the following disclaimer in the 
+ *      notice, this list of conditions and the following disclaimer in the
  *      documentation and/or other materials provided with the distribution.
- *    * The name of the author may not be used to endorse or promote products 
+ *    * The name of the author may not be used to endorse or promote products
  *      derived from this software without specific prior written permission.
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS
@@ -111,7 +111,7 @@ class Services_Yadis_Xrds_Namespace
         } elseif (array_key_exists($namespaceKey, $this->getNamespaces())) {
             throw new Services_Yadis_Exception(
                 'You may not redefine the "xrds" or "xrd" XML Namespaces'
-            ); 
+            );
         }
 
         $this->namespaces[$namespaceKey] = $namespaceUrl;

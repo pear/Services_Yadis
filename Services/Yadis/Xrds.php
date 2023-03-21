@@ -6,7 +6,7 @@
  * PHP version 5
  *
  * LICENSE:
- * 
+ *
  * Copyright (c) 2007 Pádraic Brady <padraic.brady@yahoo.com>
  * All rights reserved.
  *
@@ -17,9 +17,9 @@
  *    * Redistributions of source code must retain the above copyright
  *      notice, this list of conditions and the following disclaimer.
  *    * Redistributions in binary form must reproduce the above copyright
- *      notice, this list of conditions and the following disclaimer in the 
+ *      notice, this list of conditions and the following disclaimer in the
  *      documentation and/or other materials provided with the distribution.
- *    * The name of the author may not be used to endorse or promote products 
+ *    * The name of the author may not be used to endorse or promote products
  *      derived from this software without specific prior written permission.
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS
@@ -58,12 +58,12 @@ require_once 'Services/Yadis/Xrds/Namespace.php';
  */
 class Services_Yadis_Xrds
 {
- 
+
     /**
      * Current key/pointer for the Iterator
-     * 
+     *
      * @var integer
-     */ 
+     */
     protected $_currentKey = 0;
 
     /**
@@ -80,16 +80,16 @@ class Services_Yadis_Xrds
      * @var Services_Yadis_Xrds_Namespace
      */
     protected $_namespace = null;
- 
+
     /**
      * Constructor; parses and validates an XRD document. All access to
      * the data held in the XML is left to a concrete subclass specific to
      * expected XRD format and data types.
      * Cannot be directly instantiated; must call from subclass.
-     * 
+     *
      * @param   SimpleXMLElement $xrds
      * @param   Services_Yadis_Xrds_Namespace $namespace
-     */ 
+     */
     protected function __construct(SimpleXMLElement $xrds, Services_Yadis_Xrds_Namespace $namespace)
     {
         $this->_namespace = $namespace;
@@ -100,7 +100,7 @@ class Services_Yadis_Xrds
         }
         $this->_xrdNodes = $xrdNodes;
     }
- 
+
     /**
      * Add a list (array) of additional namespaces to be utilised by the XML
      * parser when it receives a valid XRD document.
@@ -233,7 +233,7 @@ class Services_Yadis_Xrds
                 $flattened = array_merge($flattened, $priority);
             } else {
                 $flattened[] = $priority[0];
-            } 
+            }
         }
         return $flattened;
     }
