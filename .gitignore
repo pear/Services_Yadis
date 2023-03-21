@@ -1,4 +1,5 @@
 /dist/
+/.phpunit.result.cache
 # composer related
 composer.lock
 composer.phar

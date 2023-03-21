@@ -1,8 +1,6 @@
 <?php
 
-require_once 'Services/Yadis/Xrds/Namespace.php';
-
-class Services_Yadis_Xrds_NamespaceTest extends PHPUnit_Framework_TestCase
+class Services_Yadis_Xrds_NamespaceTest extends \PHPUnit\Framework\TestCase
 {
 
     public function testInitialState()
