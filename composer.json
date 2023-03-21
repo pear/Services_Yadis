@@ -20,9 +20,6 @@
             "Services": "./"
         }
     },
-    "include-path": [
-        "./"
-    ],
     "require": {
         "pear/http_request2": "^2.2.0",
         "pear/net_url2": "^2.2.0",
